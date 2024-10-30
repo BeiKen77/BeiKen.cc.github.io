@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>优雅动态爱心背景</title>
+    <title>旋转渐变粒子爱心</title>
     <style>
         body {
             margin: 0;
@@ -12,44 +12,74 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: #f0f0f0;
-            font-family: Arial, sans-serif;
+            background: radial-gradient(circle, #141e30, #243b55);
         }
 
         .heart-container {
             position: relative;
-            width: 300px;
-            height: 300px;
-            animation: float 6s ease-in-out infinite;
+            width: 200px;
+            height: 200px;
+            animation: rotate 8s linear infinite;
         }
 
         .heart {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ff6b6b, #ff2d55);
-            transform: translate(-50%, -50%) rotate(-45%);
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            animation: pulse 3s ease-in-out infinite;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #ff6ec7, #ffd9e3);
+            transform: translate(-50%, -50%) rotate(-45deg);
+            border-radius: 50% 50% 0 0;
         }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translate(-50%, -50%) rotate(-45%) translateY(0);
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: inherit;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -50px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: 50px;
+            top: 0;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
             }
-            50% {
-                transform: translate(-50%, -50%) rotate(-45%) translateY(-10px);
+            100% {
+                transform: rotate(360deg);
             }
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: translate(-50%, -50%) rotate(-45%) scale(1);
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, #ff7e5f, #feb47b);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particle 2s ease-in-out infinite;
+        }
+
+        @keyframes particle {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
             }
-            50% {
-                transform: translate(-50%, -50%) rotate(-45%) scale(1.1);
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) scale(0.5);
             }
         }
     </style>
@@ -58,5 +88,28 @@
     <div class="heart-container">
         <div class="heart"></div>
     </div>
+
+    <script>
+        const heartContainer = document.querySelector('.heart-container');
+        const particleCount = 100; // 粒子数量
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+
+            // 随机分布粒子位置
+            const angle = Math.random() * 2 * Math.PI;
+            const distance = Math.random() * 150 + 50; // 距离中心的随机值
+            const x = Math.cos(angle) * distance;
+            const y = Math.sin(angle) * distance;
+
+            // 设置 CSS 变量控制动画
+            particle.style.setProperty('--x', `${x}px`);
+            particle.style.setProperty('--y', `${y}px`);
+            particle.style.animationDelay = `${Math.random() * 2}s`;
+
+            heartContainer.appendChild(particle);
+        }
+    </script>
 </body>
 </html>
