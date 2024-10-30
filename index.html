@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>爱心动态</title>
+    <title>高级爱心动态</title>
     <style>
         /* 设置页面背景 */
         body {
@@ -12,54 +12,113 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f3f3f3;
+            background: linear-gradient(135deg, #f5a623, #f76b1c);
             font-family: Arial, sans-serif;
+            overflow: hidden;
         }
         
-        /* 创建爱心图标的样式 */
-        .heart {
-            width: 100px;
-            height: 100px;
-            position: relative;
-            transform: rotate(-45deg);
-            background-color: #e74c3c;
-            animation: heartbeat 1s infinite;
+        /* 爱心容器的样式 */
+        .heart-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transform: scale(1);
+            transition: transform 0.2s ease;
+        }
+        .heart-container:active {
+            transform: scale(0.95);
         }
 
-        /* 爱心的两个半圆 */
+        /* 爱心的样式 */
+        .heart {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            transform: rotate(-45deg);
+            background: linear-gradient(145deg, #ff5f6d, #ffc371);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: heartbeat 1.2s infinite ease-in-out;
+        }
+        
+        /* 左右两半圆 */
         .heart::before,
         .heart::after {
             content: "";
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             position: absolute;
-            background-color: #e74c3c;
+            background: linear-gradient(145deg, #ff5f6d, #ffc371);
         }
         
-        /* 上方两个半圆的位置 */
         .heart::before {
-            top: -50px;
+            top: -60px;
             left: 0;
         }
+        
         .heart::after {
-            left: 50px;
+            left: 60px;
             top: 0;
         }
 
-        /* 动态心跳效果 */
+        /* 爱心跳动效果 */
         @keyframes heartbeat {
             0%, 100% {
                 transform: scale(1) rotate(-45deg);
+                filter: brightness(1);
             }
             50% {
-                transform: scale(1.1) rotate(-45deg);
+                transform: scale(1.2) rotate(-45deg);
+                filter: brightness(1.1);
+            }
+        }
+
+        /* 爱心点击产生的动画 */
+        .pulse {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 95, 109, 0.6);
+            border-radius: 50%;
+            animation: pulse 0.8s ease-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 脉冲效果 */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 爱心图标 -->
-    <div class="heart"></div>
+    <div class="heart-container" onclick="createPulse()">
+        <div class="heart"></div>
+    </div>
+
+    <script>
+        function createPulse() {
+            // 创建一个脉冲元素
+            const pulse = document.createElement('div');
+            pulse.classList.add('pulse');
+            
+            // 获取爱心容器的位置并将脉冲元素定位
+            const container = document.querySelector('.heart-container');
+            container.appendChild(pulse);
+
+            // 移除动画效果结束后的元素
+            pulse.addEventListener('animationend', () => {
+                pulse.remove();
+            });
+        }
+    </script>
 </body>
 </html>
