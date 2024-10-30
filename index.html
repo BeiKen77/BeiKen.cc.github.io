@@ -3,91 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D 粒子爱心效果</title>
+    <title>脉动粒子爱心</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #141414;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            font-family: sans-serif;
+            color: #fff;
+        }
+
+        .heart-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            transform-style: preserve-3d;
+            animation: rotate 10s linear infinite;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, #ff4e50, #f9d423);
+            border-radius: 50%;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(255, 78, 80, 0.8);
+        }
+
+        @keyframes rotate {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); opacity: 0.9; }
+            50% { transform: translateY(-20px); opacity: 0.5; }
         }
     </style>
 </head>
 <body>
+    <div class="heart-container" id="heartContainer"></div>
 
-<!-- 引入Three.js库 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const heartContainer = document.getElementById('heartContainer');
+        const particleCount = 150; // 粒子数量
 
-<script>
-    // 创建场景、摄像机和渲染器
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // 使用心形公式分布粒子
+            const angle = Math.random() * Math.PI * 2;
+            const r = Math.sqrt(Math.random());
+            const x = 16 * Math.pow(Math.sin(angle), 3) * r;
+            const y = -(13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle)) * r;
+            const z = (Math.random() - 0.5) * 10;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    // 创建爱心形状的粒子几何体
-    const particleCount = 3000; // 粒子数量
-    const particles = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    
-    for (let i = 0; i < particleCount; i++) {
-        // 使用数学公式生成爱心形状
-        let theta = Math.PI * (Math.random() - 0.5);
-        let phi = Math.PI * (Math.random() - 0.5);
-
-        const x = 0.5 * (16 * Math.sin(theta) ** 3);
-        const y = 0.5 * (13 * Math.cos(theta) - 5 * Math.cos(2 * theta) - 2 * Math.cos(3 * theta) - Math.cos(4 * theta));
-        const z = (Math.random() - 0.5) * 0.5;
-
-        particlePositions[i * 3] = x;
-        particlePositions[i * 3 + 1] = y;
-        particlePositions[i * 3 + 2] = z;
-
-        // 添加渐变颜色
-        colors[i * 3] = Math.random() * 0.6 + 0.4;
-        colors[i * 3 + 1] = 0.1;
-        colors[i * 3 + 2] = Math.random() * 0.8 + 0.2;
-    }
-
-    particles.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-    particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const particleMaterial = new THREE.PointsMaterial({
-        size: 0.05,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.75,
-    });
-
-    const particleSystem = new THREE.Points(particles, particleMaterial);
-    scene.add(particleSystem);
-
-    // 动画效果
-    function animate() {
-        requestAnimationFrame(animate);
-
-        // 让粒子系统旋转
-        particleSystem.rotation.y += 0.002;
-        particleSystem.rotation.x += 0.001;
-
-        renderer.render(scene, camera);
-    }
-
-    animate();
-
-    // 窗口大小调整
-    window.addEventListener('resize', () => {
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-    });
-</script>
+            particle.style.transform = `translate3d(${x * 10}px, ${y * 10}px, ${z}px)`;
+            particle.style.animationDelay = `${Math.random() * 2}s`;
+            heartContainer.appendChild(particle);
+        }
+    </script>
 </body>
 </html>
