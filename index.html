@@ -1,124 +1,105 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高级爱心动态</title>
+    <title>Minimalist Christmas Tree</title>
     <style>
-        /* 设置页面背景 */
         body {
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             height: 100vh;
+            background-color: #0a0a0a;
             margin: 0;
-            background: linear-gradient(135deg, #f5a623, #f76b1c);
-            font-family: Arial, sans-serif;
             overflow: hidden;
+            font-family: sans-serif;
         }
         
-        /* 爱心容器的样式 */
-        .heart-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transform: scale(1);
-            transition: transform 0.2s ease;
-        }
-        .heart-container:active {
-            transform: scale(0.95);
-        }
-
-        /* 爱心的样式 */
-        .heart {
-            width: 120px;
-            height: 120px;
+        .tree {
             position: relative;
-            transform: rotate(-45deg);
-            background: linear-gradient(145deg, #ff5f6d, #ffc371);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            animation: heartbeat 1.2s infinite ease-in-out;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 100px solid #1abc9c;
+            animation: sway 2s ease-in-out infinite alternate;
         }
         
-        /* 左右两半圆 */
-        .heart::before,
-        .heart::after {
-            content: "";
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
+        .tree::before,
+        .tree::after {
+            content: '';
             position: absolute;
-            background: linear-gradient(145deg, #ff5f6d, #ffc371);
+            left: -30px;
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid #1abc9c;
         }
         
-        .heart::before {
+        .tree::before {
+            top: -40px;
+        }
+        
+        .tree::after {
+            top: -80px;
+            left: -15px;
+            border-bottom-width: 80px;
+        }
+        
+        .tree-lights {
+            position: absolute;
             top: -60px;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: #f1c40f;
+            border-radius: 50%;
+            box-shadow: 
+                -15px -20px 0 #f1c40f,
+                15px -30px 0 #e74c3c,
+                -20px -10px 0 #f1c40f,
+                5px -50px 0 #f39c12,
+                -10px -50px 0 #e74c3c,
+                15px -15px 0 #f39c12,
+                -15px -30px 0 #e74c3c;
+            animation: twinkle 2s infinite alternate;
         }
         
-        .heart::after {
-            left: 60px;
-            top: 0;
+        .trunk {
+            position: relative;
+            width: 15px;
+            height: 30px;
+            background-color: #8e4e16;
+            margin: -10px auto 0;
         }
-
-        /* 爱心跳动效果 */
-        @keyframes heartbeat {
-            0%, 100% {
-                transform: scale(1) rotate(-45deg);
-                filter: brightness(1);
-            }
-            50% {
-                transform: scale(1.2) rotate(-45deg);
-                filter: brightness(1.1);
-            }
-        }
-
-        /* 爱心点击产生的动画 */
-        .pulse {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            background: rgba(255, 95, 109, 0.6);
-            border-radius: 50%;
-            animation: pulse 0.8s ease-out;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* 脉冲效果 */
-        @keyframes pulse {
+        
+        @keyframes sway {
             0% {
-                transform: scale(1);
+                transform: rotate(-3deg);
+            }
+            100% {
+                transform: rotate(3deg);
+            }
+        }
+
+        @keyframes twinkle {
+            0% {
                 opacity: 1;
             }
             100% {
-                transform: scale(2.5);
-                opacity: 0;
+                opacity: 0.6;
             }
         }
     </style>
 </head>
 <body>
-    <div class="heart-container" onclick="createPulse()">
-        <div class="heart"></div>
+    <div class="tree-container">
+        <div class="tree"></div>
+        <div class="tree-lights"></div>
+        <div class="trunk"></div>
     </div>
-
-    <script>
-        function createPulse() {
-            // 创建一个脉冲元素
-            const pulse = document.createElement('div');
-            pulse.classList.add('pulse');
-            
-            // 获取爱心容器的位置并将脉冲元素定位
-            const container = document.querySelector('.heart-container');
-            container.appendChild(pulse);
-
-            // 移除动画效果结束后的元素
-            pulse.addEventListener('animationend', () => {
-                pulse.remove();
-            });
-        }
-    </script>
 </body>
 </html>
