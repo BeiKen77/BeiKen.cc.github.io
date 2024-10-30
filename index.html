@@ -1,105 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist Christmas Tree</title>
+    <title>动态爱心效果</title>
     <style>
         body {
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
-            background-color: #0a0a0a;
             margin: 0;
+            background-color: #282c34;
             overflow: hidden;
-            font-family: sans-serif;
-        }
-        
-        .tree {
-            position: relative;
-            width: 0;
-            height: 0;
-            border-left: 50px solid transparent;
-            border-right: 50px solid transparent;
-            border-bottom: 100px solid #1abc9c;
-            animation: sway 2s ease-in-out infinite alternate;
-        }
-        
-        .tree::before,
-        .tree::after {
-            content: '';
-            position: absolute;
-            left: -30px;
-            width: 0;
-            height: 0;
-            border-left: 30px solid transparent;
-            border-right: 30px solid transparent;
-            border-bottom: 60px solid #1abc9c;
-        }
-        
-        .tree::before {
-            top: -40px;
-        }
-        
-        .tree::after {
-            top: -80px;
-            left: -15px;
-            border-bottom-width: 80px;
-        }
-        
-        .tree-lights {
-            position: absolute;
-            top: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            background-color: #f1c40f;
-            border-radius: 50%;
-            box-shadow: 
-                -15px -20px 0 #f1c40f,
-                15px -30px 0 #e74c3c,
-                -20px -10px 0 #f1c40f,
-                5px -50px 0 #f39c12,
-                -10px -50px 0 #e74c3c,
-                15px -15px 0 #f39c12,
-                -15px -30px 0 #e74c3c;
-            animation: twinkle 2s infinite alternate;
-        }
-        
-        .trunk {
-            position: relative;
-            width: 15px;
-            height: 30px;
-            background-color: #8e4e16;
-            margin: -10px auto 0;
-        }
-        
-        @keyframes sway {
-            0% {
-                transform: rotate(-3deg);
-            }
-            100% {
-                transform: rotate(3deg);
-            }
         }
 
-        @keyframes twinkle {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0.6;
-            }
+        .heart {
+            position: relative;
+            width: 100px;
+            height: 90px;
+            background-color: #e63946;
+            transform: rotate(-45deg);
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.5);
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 90px;
+            background-color: #e63946;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -50px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: 50px;
+            top: 0;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1) rotate(-45deg); }
+            50% { transform: scale(1.1) rotate(-45deg); }
+            100% { transform: scale(1) rotate(-45deg); }
         }
     </style>
 </head>
 <body>
-    <div class="tree-container">
-        <div class="tree"></div>
-        <div class="tree-lights"></div>
-        <div class="trunk"></div>
-    </div>
+    <div class="heart"></div>
 </body>
 </html>
