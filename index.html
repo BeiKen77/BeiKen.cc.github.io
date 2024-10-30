@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>粒子爆炸脉动爱心</title>
+    <title>动态爱心粒子爆炸</title>
     <style>
         body {
             margin: 0;
@@ -12,38 +12,35 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: radial-gradient(circle at center, #ff6b6b, #1b1b32);
-            font-family: sans-serif;
-            color: #fff;
+            background: #141414;
+            font-family: Arial, sans-serif;
         }
 
         .heart-container {
             position: relative;
-            width: 300px;
-            height: 300px;
-            transform-style: preserve-3d;
-            animation: rotate 8s linear infinite;
+            width: 200px;
+            height: 200px;
         }
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: radial-gradient(circle, #ff4e50, #ffc371);
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #ff4e50, #f9d423);
             border-radius: 50%;
             opacity: 0;
-            transform-origin: center;
-            animation: pulse 3s ease-in-out infinite;
+            animation: explode 1.5s forwards;
         }
 
-        @keyframes rotate {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0; transform: scale(0.5) translateY(0); }
-            50% { opacity: 1; transform: scale(1.5) translateY(-20px); }
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0.5);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -52,23 +49,30 @@
 
     <script>
         const heartContainer = document.getElementById('heartContainer');
-        const particleCount = 250; // 粒子数量
+        const particleCount = 150; // 粒子数量
 
+        // 使用心形公式生成粒子
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
             
-            // 使用心形公式分布粒子
             const angle = Math.random() * Math.PI * 2;
             const r = Math.sqrt(Math.random());
-            const x = 16 * Math.pow(Math.sin(angle), 3) * r;
-            const y = -(13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle)) * r;
-            const z = (Math.random() - 0.5) * 20;
+            const x = 16 * Math.pow(Math.sin(angle), 3) * r * 5; // 缩放以适应容器
+            const y = -(13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle)) * r * 5;
 
-            particle.style.transform = `translate3d(${x * 10}px, ${y * 10}px, ${z}px)`;
-            particle.style.animationDelay = `${Math.random() * 2}s`;
+            // 设置粒子位置和动画属性
+            particle.style.transform = `translate(${x}px, ${y}px)`;
+            particle.style.setProperty('--x', `${(Math.random() - 0.5) * 200}px`);
+            particle.style.setProperty('--y', `${(Math.random() - 0.5) * 200}px`);
+            particle.style.animationDelay = `${Math.random() * 1}s`;
+
             heartContainer.appendChild(particle);
         }
+
+        // 设置爱心容器的样式
+        heartContainer.style.position = 'relative';
+        heartContainer.style.transform = 'scale(1.5)'; // 调整爱心大小
     </script>
 </body>
 </html>
